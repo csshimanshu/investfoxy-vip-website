@@ -52,3 +52,30 @@ All commands are run from the root of the project, from a terminal:
 ## 👀 Want to learn more?
 
 Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+
+# InvestFoxy VIP Website
+
+A professional crypto trading platform built with:
+- Astro
+- TypeScript
+- Tailwind CSS
+- Alpine.js
+
+## Development
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+```
+
+## Deployment
+This project is deployed on CodeSandbox. View the live version at: [CodeSandbox Link]
+
+## Updates
+Changes made locally need to be pushed to GitHub and then pulled in CodeSandbox to stay in sync.

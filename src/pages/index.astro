@@ -1,0 +1,880 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import Testimonials from '../components/Testimonials.astro';
+import ProfitSlider from '../components/ProfitSlider.astro';
+import content from '../data/content.json';
+
+const pageTitle = content.branding?.title || 'Investfoxy Trading - Private Trading Discord Membership Group';
+---
+
+<MainLayout title={pageTitle}>
+  <main id="main-content"> 
+
+    <!-- Mobile Bottom Navigation -->
+    <div class="fixed bottom-0 left-0 right-0 z-50 lg:hidden pb-safe">
+      <nav class="flex items-center justify-around gap-1 bg-black/80 backdrop-blur-lg px-2 py-2 border-t border-white/10">
+        <a href="#home" class="flex flex-col items-center text-white/60 hover:text-white hover:bg-white/10 px-1.5 py-1.5 rounded-lg transition-all duration-200 nav-link active">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+          </svg>
+          <span class="text-xs font-medium">Home</span>
+        </a>
+
+        <a href="#pricing" class="flex flex-col items-center text-white/60 hover:text-white hover:bg-white/10 px-1.5 py-1.5 rounded-lg transition-all duration-200 nav-link">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span class="text-xs font-medium">Pricing</span>
+        </a>
+
+        <a href="#features" class="flex flex-col items-center text-white/60 hover:text-white hover:bg-white/10 px-1.5 py-1.5 rounded-lg transition-all duration-200 nav-link">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+          </svg>
+          <span class="text-xs font-medium">Features</span>
+        </a>
+
+        <a href="#performance" class="flex flex-col items-center text-white/60 hover:text-white hover:bg-white/10 px-1.5 py-1.5 rounded-lg transition-all duration-200 nav-link">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+          </svg>
+          <span class="text-xs font-medium">Performance</span>
+        </a>
+
+        <a href="#testimonials" class="flex flex-col items-center text-white/60 hover:text-white hover:bg-white/10 px-1.5 py-1.5 rounded-lg transition-all duration-200 nav-link">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+          </svg>
+          <span class="text-xs font-medium">Reviews</span>
+        </a>
+
+        <button 
+          onclick="window.showInterestModal()" 
+          class="flex flex-col items-center px-3 py-1.5 rounded-lg transition-all duration-200 bg-gradient-to-r from-accent to-purple-600 text-white shadow-lg shadow-accent/20 hover:shadow-accent/40 hover:scale-105 active:scale-95"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+          <span class="text-xs font-medium">Join</span>
+        </button>
+      </nav>
+    </div>
+
+    <!-- Scroll to Top Button -->
+    <button id="scrollToTop" class="fixed bottom-4 right-4 z-50 bg-accent/80 hover:bg-accent text-white p-2 rounded-full shadow-lg transition-all duration-300 opacity-0 translate-y-10">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+      </svg>
+    </button>
+
+    <!-- Left Side Navigation -->
+    <nav class="fixed left-4 top-1/2 -translate-y-1/2 z-50 hidden lg:block">
+      <div class="space-y-4 bg-black/30 backdrop-blur-lg px-4 py-6 rounded-2xl border border-white/10">
+        <a href="#home" class="group flex items-center space-x-3 text-white/60 hover:text-white hover:bg-white/10 p-2 rounded-lg transition-all duration-200 nav-link">
+          <div class="relative flex items-center">
+            <div class="absolute -left-2 w-2.5 h-2.5 rounded-full bg-accent/90 shadow-lg shadow-accent/50 opacity-0 transition-all duration-300 nav-dot"></div>
+            <svg class="w-5 h-5 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+            </svg>
+          </div>
+          <span class="font-medium">Home</span>
+        </a>
+
+        <a href="#pricing" class="group flex items-center space-x-3 text-white/60 hover:text-white hover:bg-white/10 p-2 rounded-lg transition-all duration-200 nav-link">
+          <div class="relative flex items-center">
+            <div class="absolute -left-2 w-2.5 h-2.5 rounded-full bg-accent/90 shadow-lg shadow-accent/50 opacity-0 transition-all duration-300 nav-dot"></div>
+            <svg class="w-5 h-5 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <span class="font-medium">Pricing</span>
+        </a>
+
+        <a href="#features" class="group flex items-center space-x-3 text-white/60 hover:text-white hover:bg-white/10 p-2 rounded-lg transition-all duration-200 nav-link">
+          <div class="relative flex items-center">
+            <div class="absolute -left-2 w-2.5 h-2.5 rounded-full bg-accent/90 shadow-lg shadow-accent/50 opacity-0 transition-all duration-300 nav-dot"></div>
+            <svg class="w-5 h-5 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+            </svg>
+          </div>
+          <span class="font-medium">Features</span>
+        </a>
+
+        <a href="#performance" class="group flex items-center space-x-3 text-white/60 hover:text-white hover:bg-white/10 p-2 rounded-lg transition-all duration-200 nav-link">
+          <div class="relative flex items-center">
+            <div class="absolute -left-2 w-2.5 h-2.5 rounded-full bg-accent/90 shadow-lg shadow-accent/50 opacity-0 transition-all duration-300 nav-dot"></div>
+            <svg class="w-5 h-5 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+            </svg>
+          </div>
+          <span class="font-medium">Performance</span>
+        </a>
+
+        <a href="#testimonials" class="group flex items-center space-x-3 text-white/60 hover:text-white hover:bg-white/10 p-2 rounded-lg transition-all duration-200 nav-link">
+          <div class="relative flex items-center">
+            <div class="absolute -left-2 w-2.5 h-2.5 rounded-full bg-accent/90 shadow-lg shadow-accent/50 opacity-0 transition-all duration-300 nav-dot"></div>
+            <svg class="w-5 h-5 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+          </div>
+          <span class="font-medium">Reviews</span>
+        </a>
+
+        <a href="#contact" class="group flex items-center space-x-3 text-white/60 hover:text-white hover:bg-white/10 p-2 rounded-lg transition-all duration-200 nav-link">
+          <div class="relative flex items-center">
+            <div class="absolute -left-2 w-2.5 h-2.5 rounded-full bg-accent/90 shadow-lg shadow-accent/50 opacity-0 transition-all duration-300 nav-dot"></div>
+            <svg class="w-5 h-5 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <span class="font-medium">Contact</span>
+        </a>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden" aria-labelledby="hero-heading">
+      <div class="absolute inset-0 w-full h-full">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-[2px]">
+          <img 
+            src="/137862503_5cca217f-e484-46ad-af51-a4740e8ebf42.jpg"
+            alt="Background"
+            class="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-90"
+          />
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-transparent"></div>
+        <div class="absolute inset-0 bg-gradient-radial from-accent/10 via-transparent to-transparent opacity-60"></div>
+        <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-primary-dark via-primary-dark/80 to-transparent"></div>
+      </div>
+    
+      <!-- Hero Content with enhanced animations -->
+      <div class="relative z-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center hero-content">
+        <div class="animate-fade-in-up">
+          <!-- New text boxes -->
+          <div class="flex items-center justify-center gap-2 sm:gap-4 mb-6">
+            <div class="bg-black text-white px-2 sm:px-3 py-1 text-xs sm:text-sm font-light rounded-md hover:opacity-80 transition-opacity duration-200">
+              Gain Knowledge From
+            </div>
+            <div class="bg-[#4B0082] text-white px-2 sm:px-3 py-1 text-xs sm:text-sm font-medium rounded-md">
+              Community Leaders on Investments
+            </div>
+          </div>
+          <h1 id="hero-heading" class="text-3xl sm:text-4xl lg:text-6xl font-bold mb-6 tracking-tight">
+            Investfoxy <span class="animate-gradient-x bg-clip-text text-transparent bg-gradient-to-r from-violet-600 via-fuchsia-500 to-violet-600 glow">Crypto Trading</span>
+          </h1>
+          <p class="text-md sm:text-lg md:text-xl text-transparent bg-clip-text bg-gradient-to-r from-gray-100 to-gray-300 font-light tracking-wide leading-relaxed mb-6 max-w-3xl mx-auto px-4 sm:px-6 animate-fade-in-up">
+            Join our exclusive VIP group for expert crypto trading signals and insights
+          </p>
+          <div class="inline-block px-6 py-3 rounded-2xl bg-black/40 backdrop-blur-md border border-white/10 mb-8 transform hover:scale-105 transition-all duration-300">
+            <p class="text-lg sm:text-xl text-gray-200 font-medium">
+              Start Your <span class="animate-gradient-x bg-clip-text text-transparent bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-300">Crypto Trading Journey</span> Today
+            </p>
+          </div>
+        </div>
+        
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12 animate-fade-in-up" style="animation-delay: 200ms;">
+          <a href="#join" 
+             id="hero-cta" 
+             onclick="window.showInterestModal()"
+             class="group click-me-animation inline-flex items-center px-6 py-3 text-base font-medium rounded-full text-white bg-gradient-to-r from-accent/80 to-purple-600/80 hover:from-accent hover:to-purple-600 backdrop-blur-sm shadow-xl hover:shadow-accent/30 transition-all duration-300 gap-2 transform hover:-translate-y-0.5"
+             aria-label="Join our VIP membership program">
+            <svg class="w-5 h-5 group-hover:animate-bounce" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            Become a Member
+          </a>
+          <a href="https://discord.com/invite/qkmh9MgVMT" 
+             target="_blank"
+             rel="noopener noreferrer"
+             class="group inline-flex items-center px-6 py-3 text-base font-medium rounded-full text-white bg-gradient-to-r from-accent/80 to-purple-600/80 hover:from-accent hover:to-purple-600 backdrop-blur-sm shadow-xl hover:shadow-accent/30 transition-all duration-300 gap-2 transform hover:-translate-y-0.5"
+             aria-label="Join our Discord community">
+            <svg class="w-5 h-5 group-hover:animate-bounce" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.857a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.892a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"/>
+            </svg>
+            Join Discord
+          </a>
+        </div>
+      </div>
+    
+      <!-- Floating Navigation Indicator -->
+      <div class="fixed right-4 top-1/2 -translate-y-1/2 z-50 hidden lg:block">
+        <nav class="space-y-2" aria-label="Section navigation">
+          <a href="#home" class="nav-dot active" aria-label="Navigate to home section"></a>
+          <a href="#pricing" class="nav-dot" aria-label="Navigate to pricing section"></a>
+          <a href="#features" class="nav-dot" aria-label="Navigate to features section"></a>
+          <a href="#performance" class="nav-dot" aria-label="Navigate to performance section"></a>
+          <a href="#testimonials" class="nav-dot" aria-label="Navigate to testimonials section"></a>
+        </nav>
+      </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-12 md:py-20 bg-gradient-to-b from-gray-900 to-black relative overflow-hidden" aria-labelledby="pricing-heading">
+      <!-- Animated Background Effect -->
+      <div class="absolute inset-0 opacity-10">
+        <div class="absolute inset-0 bg-grid-white/[0.05] bg-[length:40px_40px]"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent"></div>
+      </div>
+
+      <div class="container mx-auto px-4 max-w-6xl">
+        <!-- Urgency Message -->
+        <div class="text-center mb-6 md:mb-12 relative">
+          <div class="inline-block">
+            <div class="animate-bounce-slow bg-gradient-to-r from-primary to-primary-light text-white px-3 py-1.5 rounded-full text-sm md:text-base font-medium shadow-lg">
+              Hurry up! The seats are filling fast
+            </div>
+            <div class="mt-2 text-white text-sm md:text-base font-medium tracking-wide">
+              <span id="countdown" class="font-mono"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pricing Cards -->
+        <div class="grid md:grid-cols-2 gap-4 md:gap-6 max-w-4xl mx-auto">
+          <!-- 3 Months Plan -->
+          <div class="relative group">
+            <div class="absolute -inset-0.5 bg-gradient-to-r from-blue-400 to-blue-500 rounded-xl blur opacity-25 group-hover:opacity-75 transition duration-200"></div>
+            <div class="relative bg-gray-900 border border-gray-800 rounded-lg p-5 md:p-6 hover:border-blue-500 transition-all duration-200 flex flex-col h-full">
+              <div class="flex-1">
+                <h3 class="text-lg md:text-xl font-semibold text-white mb-2">3 Months Access</h3>
+                <div class="mb-4 md:mb-6">
+                  <span class="text-3xl md:text-4xl font-bold text-white">$249</span>
+                  <span class="text-sm md:text-base text-gray-400 ml-1">/quarter</span>
+                </div>
+                <ul class="space-y-2 md:space-y-3 mb-6">
+                  <li class="flex items-center text-sm text-gray-300">
+                    <svg class="w-4 h-4 text-blue-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span>Full Access to Trading Signals</span>
+                  </li>
+                  <li class="flex items-center text-sm text-gray-300">
+                    <svg class="w-4 h-4 text-blue-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span>Private Discord Community</span>
+                  </li>
+                  <li class="flex items-center text-sm text-gray-300">
+                    <svg class="w-4 h-4 text-blue-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span>24/7 Support</span>
+                  </li>
+                  <li class="flex items-center text-sm text-gray-300">
+                    <svg class="w-4 h-4 text-blue-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span>Market Analysis Updates</span>
+                  </li>
+                </ul>
+              </div>
+              <button onclick="window.showInterestModal(); window.formData.selectedPlan='3 Months Access';" class="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white font-medium py-2.5 px-4 rounded-lg text-sm transition duration-200 shadow-lg hover:shadow-blue-500/20 hover:scale-[1.02]">
+                Get Started
+              </button>
+            </div>
+          </div>
+
+          <!-- Lifetime Plan -->
+          <div class="relative group">
+            <div class="absolute -inset-0.5 bg-gradient-to-r from-yellow-500 to-primary rounded-xl blur opacity-25 group-hover:opacity-75 transition duration-200"></div>
+            <div class="relative bg-gray-900 border border-gray-800 rounded-lg p-5 md:p-6 hover:border-yellow-500 transition-all duration-200 flex flex-col h-full">
+              <div class="absolute -top-3 md:-top-4 right-3 md:right-4">
+                <div class="relative">
+                  <div class="absolute inset-0 bg-gradient-to-r from-yellow-400 to-yellow-600 blur-sm opacity-75"></div>
+                  <span class="relative bg-gradient-to-r from-yellow-500 to-yellow-400 text-black text-sm md:text-base font-semibold px-3 py-1 rounded-full shadow-lg transform hover:scale-105 transition-transform duration-200 inline-block">Best Value</span>
+                </div>
+              </div>
+              <div class="flex-1">
+                <h3 class="text-lg md:text-xl font-semibold text-white mb-2">Lifetime Access</h3>
+                <div class="mb-4 md:mb-6">
+                  <span class="text-3xl md:text-4xl font-bold text-white">$700</span>
+                  <span class="text-sm md:text-base text-gray-400 ml-1">/lifetime</span>
+                </div>
+                <ul class="space-y-2 md:space-y-3 mb-6">
+                  <li class="flex items-center text-sm text-gray-300">
+                    <svg class="w-4 h-4 text-yellow-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span>Lifetime Access to Trading Signals</span>
+                  </li>
+                  <li class="flex items-center text-sm text-gray-300">
+                    <svg class="w-4 h-4 text-yellow-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span>Private Discord Community</span>
+                  </li>
+                  <li class="flex items-center text-sm text-gray-300">
+                    <svg class="w-4 h-4 text-yellow-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span>Priority 24/7 Support</span>
+                  </li>
+                  <li class="flex items-center text-sm text-gray-300">
+                    <svg class="w-4 h-4 text-yellow-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span>Premium Market Analysis</span>
+                  </li>
+                  <li class="flex items-center text-sm text-gray-300">
+                    <svg class="w-4 h-4 text-yellow-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span>One-on-One Strategy Sessions</span>
+                  </li>
+                </ul>
+              </div>
+              <button onclick="window.showInterestModal(); window.formData.selectedPlan='Lifetime Access';" class="w-full bg-gradient-to-r from-yellow-500 to-primary text-white font-medium py-2.5 px-4 rounded-lg text-sm transition duration-200 shadow-lg hover:shadow-primary/20 hover:scale-[1.02]">
+                Get Started
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="relative min-h-screen flex items-center justify-center py-24 bg-gradient-to-b from-black to-primary-dark overflow-hidden" aria-labelledby="features-heading">
+      <!-- Gradient Background Effect -->
+      <div class="absolute inset-0 bg-grid-pattern opacity-5"></div>
+      <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-black/80"></div>
+
+      <!-- Content Container -->
+      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Section Header -->
+        <div class="text-center mb-16 relative">
+          <h2 id="features-heading" class="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 tracking-tight">
+            Trading Features
+          </h2>
+          <p class="text-gray-400 max-w-2xl mx-auto text-sm md:text-base">
+            Experience professional-grade trading tools and insights designed to maximize your potential in the crypto market.
+          </p>
+        </div>
+
+        <!-- Features Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+          <!-- Feature 1 -->
+          <div class="group relative">
+            <div class="absolute -inset-0.5 bg-gradient-to-r from-accent to-primary rounded-2xl blur opacity-30 group-hover:opacity-100 transition duration-300"></div>
+            <div class="relative p-6 rounded-xl bg-black/30 backdrop-blur-sm border border-white/10 hover:border-accent/50 transition-all duration-300 h-full transform hover:-translate-y-1">
+              <div class="w-12 h-12 bg-gradient-to-br from-accent to-primary rounded-xl flex items-center justify-center mb-4 transform group-hover:scale-110 transition-transform duration-300" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+              </div>
+              <h3 class="text-lg font-semibold text-white mb-2 group-hover:text-accent transition-colors">Market Insights</h3>
+              <p class="text-sm text-gray-400 leading-relaxed">Get real-time analysis and trading signals from our expert traders. Stay ahead of market movements with professional guidance.</p>
+            </div>
+          </div>
+      
+          <!-- Feature 2 -->
+          <div class="group relative">
+            <div class="absolute -inset-0.5 bg-gradient-to-r from-accent to-primary rounded-2xl blur opacity-30 group-hover:opacity-100 transition duration-300"></div>
+            <div class="relative p-6 rounded-xl bg-black/30 backdrop-blur-sm border border-white/10 hover:border-accent/50 transition-all duration-300 h-full transform hover:-translate-y-1">
+              <div class="w-12 h-12 bg-gradient-to-br from-accent to-primary rounded-xl flex items-center justify-center mb-4 transform group-hover:scale-110 transition-transform duration-300" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+              </div>
+              <h3 class="text-lg font-semibold text-white mb-2 group-hover:text-accent transition-colors">Educational Resources</h3>
+              <p class="text-sm text-gray-400 leading-relaxed">Access comprehensive guides and tutorials designed for all experience levels. Master crypto trading with our curated learning paths.</p>
+            </div>
+          </div>
+      
+          <!-- Feature 3 -->
+          <div class="group relative">
+            <div class="absolute -inset-0.5 bg-gradient-to-r from-accent to-primary rounded-2xl blur opacity-30 group-hover:opacity-100 transition duration-300"></div>
+            <div class="relative p-6 rounded-xl bg-black/30 backdrop-blur-sm border border-white/10 hover:border-accent/50 transition-all duration-300 h-full transform hover:-translate-y-1">
+              <div class="w-12 h-12 bg-gradient-to-br from-accent to-primary rounded-xl flex items-center justify-center mb-4 transform group-hover:scale-110 transition-transform duration-300" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                </svg>
+              </div>
+              <h3 class="text-lg font-semibold text-white mb-2 group-hover:text-accent transition-colors">In-Depth Analysis</h3>
+              <p class="text-sm text-gray-400 leading-relaxed">Receive detailed market analysis and proven trading strategies. Make informed decisions with our expert insights.</p>
+            </div>
+          </div>
+      
+          <!-- Feature 4 -->
+          <div class="group relative">
+            <div class="absolute -inset-0.5 bg-gradient-to-r from-accent to-primary rounded-2xl blur opacity-30 group-hover:opacity-100 transition duration-300"></div>
+            <div class="relative p-6 rounded-xl bg-black/30 backdrop-blur-sm border border-white/10 hover:border-accent/50 transition-all duration-300 h-full transform hover:-translate-y-1">
+              <div class="w-12 h-12 bg-gradient-to-br from-accent to-primary rounded-xl flex items-center justify-center mb-4 transform group-hover:scale-110 transition-transform duration-300" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <h3 class="text-lg font-semibold text-white mb-2 group-hover:text-accent transition-colors">Real-Time Alerts</h3>
+              <p class="text-sm text-gray-400 leading-relaxed">Never miss a trading opportunity with instant notifications. Get alerts for market movements and trading signals.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <style>
+      .bg-grid-pattern {
+        background-image: 
+          linear-gradient(to right, rgba(255,255,255,.05) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(255,255,255,.05) 1px, transparent 1px);
+        background-size: 30px 30px;
+      }
+    </style>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="relative min-h-screen flex items-center justify-center py-16" aria-labelledby="testimonials-heading">
+      <h2 id="testimonials-heading" class="sr-only">Customer Testimonials</h2>
+      <Testimonials />
+    </section>
+
+    <!-- Performance Section -->
+    <section id="performance" class="relative min-h-screen flex items-center justify-center py-16" aria-labelledby="performance-heading">
+      <ProfitSlider />
+    </section>
+
+    <style>
+      .animate-bounce-slow {
+        animation: bounce 2s infinite;
+      }
+      @keyframes bounce {
+        0% {
+          transform: translateY(-5%);
+          animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+        }
+        70% {
+          transform: translateY(0);
+          box-shadow: 0 0 0 15px rgba(59, 130, 246, 0);
+        }
+        100% {
+          transform: translateY(-5%);
+          box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+        }
+      }
+      .bg-grid-white {
+        background-image: linear-gradient(to right, rgba(255,255,255,0.1) 1px, transparent 1px),
+                         linear-gradient(to bottom, rgba(255,255,255,0.1) 1px, transparent 1px);
+      }
+    </style>
+
+    <script>
+      // Countdown Timer
+      function updateCountdown(): void {
+        const now = new Date();
+        const endOfDay = new Date();
+        endOfDay.setHours(23, 59, 59, 999);
+        
+        const timeLeft = endOfDay.getTime() - now.getTime();
+        
+        const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+        
+        const countdownElement = document.getElementById('countdown');
+        if (countdownElement) {
+          countdownElement.textContent = `Offer ends in: ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+      }
+
+      // Update countdown every second
+      setInterval(updateCountdown, 1000);
+      updateCountdown(); // Initial call
+    </script>
+
+    <!-- Footer -->
+    <footer id="footer" class="bg-black border-t border-white/10" role="contentinfo">
+      <!-- Current Footer Content -->
+      <div class="max-w-5xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto">
+          <p class="text-sm text-gray-300 mb-6">
+            Join Investfoxy Crypto Trading VIP group and gain access to exclusive insights, real-time signals, and a community of successful traders.
+          </p>
+          <p class="text-xs text-gray-500 mb-3"> 2025 Investfoxy. All rights reserved.</p>
+          <div class="flex justify-center space-x-4">
+            <a href="/terms" 
+               id="terms-link" 
+               class="text-[10px] text-gray-500 hover:text-accent focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
+               aria-label="View our terms and conditions">
+              Terms & Conditions
+            </a>
+            <span class="text-gray-500">•</span>
+            <a href="/privacy" 
+               id="privacy-link" 
+               class="text-[10px] text-gray-500 hover:text-accent focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
+               aria-label="View our privacy policy">
+              Privacy Policy
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- Multi-step Interest Form Modal -->
+<div id="interest-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center z-50">
+  <div class="bg-gray-900 rounded-xl p-6 md:p-8 max-w-md w-full mx-4 border border-white/10 shadow-xl">
+    <div class="flex justify-between items-center mb-6">
+      <h3 class="text-xl md:text-2xl font-semibold text-white">Join InvestFoxy</h3>
+      <button onclick="window.closeInterestModal()" class="text-gray-400 hover:text-white">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Step 1: Trading Experience -->
+    <div id="step-1" class="step-content">
+      <h4 class="text-lg font-medium text-white mb-4">How long have you been trading?</h4>
+      <div class="space-y-3">
+        <button onclick="window.selectExperience('6 months')" class="w-full text-left px-4 py-3 rounded-lg bg-gray-800 hover:bg-gray-700 text-white transition duration-200">
+          6 months
+        </button>
+        <button onclick="window.selectExperience('1 year')" class="w-full text-left px-4 py-3 rounded-lg bg-gray-800 hover:bg-gray-700 text-white transition duration-200">
+          1 year
+        </button>
+        <button onclick="window.selectExperience('More than 1 year')" class="w-full text-left px-4 py-3 rounded-lg bg-gray-800 hover:bg-gray-700 text-white transition duration-200">
+          More than 1 year
+        </button>
+      </div>
+    </div>
+
+    <!-- Step 2: Plan Selection -->
+    <div id="step-2" class="step-content hidden">
+      <h4 class="text-lg font-medium text-white mb-4">Which plan would you like to choose?</h4>
+      <div class="space-y-4">
+        <button onclick="window.selectPlan('3-month')" class="w-full text-left p-4 rounded-lg bg-gray-800 hover:bg-gray-700 transition duration-200">
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-white font-medium">3 Months Access</span>
+            <span class="text-blue-400">$300</span>
+          </div>
+          <p class="text-sm text-gray-400">Access to all trading signals and community features for 3 months</p>
+        </button>
+        <button onclick="window.selectPlan('lifetime')" class="w-full text-left p-4 rounded-lg bg-gray-800 hover:bg-gray-700 transition duration-200">
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-white font-medium">Lifetime Access</span>
+            <span class="text-yellow-500">$700</span>
+          </div>
+          <p class="text-sm text-gray-400">Unlimited access to all features and future updates</p>
+        </button>
+      </div>
+    </div>
+
+    <!-- Step 3: Contact Information -->
+    <div id="step-3" class="step-content hidden">
+      <h4 class="text-lg font-medium text-white mb-4">Almost there! Just a few more details...</h4>
+      <div class="space-y-4">
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-300 mb-1">Email Address</label>
+          <input
+            type="email"
+            id="email"
+            required
+            class="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            placeholder="you@example.com"
+          />
+        </div>
+        <div>
+          <label for="discord" class="block text-sm font-medium text-gray-300 mb-1">Discord ID (Optional)</label>
+          <input
+            type="text"
+            id="discord"
+            class="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            placeholder="username#1234"
+          />
+        </div>
+        <button onclick="window.submitForm()" class="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3 rounded-lg transition duration-200 shadow-lg hover:shadow-blue-500/20">
+          Submit
+        </button>
+      </div>
+    </div>
+
+    <!-- Success Message -->
+    <div id="success-message" class="step-content hidden text-center">
+      <svg class="w-16 h-16 text-green-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+      </svg>
+      <h4 class="text-xl font-medium text-white mb-4">Thanks for showing interest!</h4>
+      <p class="text-gray-400 mb-6">We will reach out to you soon.</p>
+      <a
+        href="https://discord.com/invite/qkmh9MgVMT"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-block w-full bg-[#5865F2] hover:bg-[#4752C4] text-white font-semibold py-3 rounded-lg transition duration-200"
+      >
+        Join Our Discord
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  interface FormData {
+    tradingExperience: string;
+    selectedPlan: string;
+    email: string;
+    discordId?: string;
+  }
+
+  interface CustomWindow extends Window {
+    formData: FormData;
+    showInterestModal: () => void;
+    closeInterestModal: () => void;
+    resetForm: () => void;
+    showStep: (step: number) => void;
+    selectExperience: (experience: string) => void;
+    selectPlan: (plan: string) => void;
+    submitForm: () => Promise<void>;
+  }
+
+  declare const window: CustomWindow;
+
+  // Initialize form data
+  window.formData = {
+    tradingExperience: '',
+    selectedPlan: '',
+    email: '',
+    discordId: ''
+  };
+
+  // Modal functions
+  window.showInterestModal = () => {
+    const modal = document.getElementById('interest-modal');
+    if (modal) {
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+  };
+
+  window.closeInterestModal = () => {
+    const modal = document.getElementById('interest-modal');
+    if (modal) {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+    window.resetForm();
+  };
+
+  window.resetForm = () => {
+    window.formData = {
+      tradingExperience: '',
+      selectedPlan: '',
+      email: '',
+      discordId: ''
+    };
+    
+    // Reset form fields
+    const emailInput = document.getElementById('email') as HTMLInputElement;
+    const discordInput = document.getElementById('discord') as HTMLInputElement;
+    if (emailInput) emailInput.value = '';
+    if (discordInput) discordInput.value = '';
+    
+    // Hide error message
+    const errorText = document.getElementById('error-text');
+    if (errorText) errorText.textContent = '';
+    
+    window.showStep(1);
+  };
+
+  window.showStep = (step: number) => {
+    const steps = document.querySelectorAll('.step-content');
+    steps.forEach((s, i) => {
+      if (i + 1 === step) {
+        s.classList.remove('hidden');
+      } else {
+        s.classList.add('hidden');
+      }
+    });
+  };
+
+  window.selectExperience = (experience: string) => {
+    window.formData.tradingExperience = experience;
+    window.showStep(2);
+  };
+
+  window.selectPlan = (plan: string) => {
+    window.formData.selectedPlan = plan;
+    window.showStep(3);
+  };
+
+  window.submitForm = async () => {
+    const emailInput = document.getElementById('email') as HTMLInputElement;
+    const discordInput = document.getElementById('discord') as HTMLInputElement;
+    const errorText = document.getElementById('error-text');
+    
+    // Clear previous error
+    if (errorText) errorText.textContent = '';
+
+    // Validate email
+    if (!emailInput?.value) {
+      if (errorText) errorText.textContent = 'Please enter your email address';
+      return;
+    }
+
+    // Update form data
+    window.formData.email = emailInput.value;
+    window.formData.discordId = discordInput?.value || '';
+
+    try {
+      // Use the correct API endpoint path
+      const response = await fetch('/api/interests', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(window.formData)
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+
+      if (result.success) {
+        // Show success step
+        window.showStep(4);
+      } else {
+        if (errorText) errorText.textContent = result.message || 'An error occurred. Please try again.';
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      if (errorText) {
+        errorText.textContent = error instanceof Error ? error.message : 'An error occurred while submitting the form. Please try again.';
+      }
+    }
+  };
+
+  // Initialize form
+  window.resetForm();
+</script>
+
+  </main>
+
+  <style is:global>
+    /* Enable smooth scrolling for the entire page */
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 80px; /* Adjust based on your header height */
+    }
+
+    /* For browsers that support it, use native smooth scrolling */
+    @media (prefers-reduced-motion: no-preference) {
+      :root {
+        scroll-behavior: smooth;
+      }
+    }
+
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    ::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    html {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+    }
+
+    /* Navigation dot styles */
+    .nav-dot {
+      @apply absolute left-0 top-1/2 -translate-y-1/2 w-1 h-1 bg-accent rounded-full opacity-0;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .nav-dot.opacity-100 {
+      @apply w-1.5 h-1.5;
+      transform: translateY(-50%) scale(1.2);
+    }
+
+    /* Navigation link styles */
+    .nav-link {
+      transition: color 0.3s ease, background-color 0.3s ease;
+    }
+
+    .nav-link.active .nav-dot {
+      opacity: 1;
+    }
+
+    @keyframes gradient-x {
+      0%, 100% {
+        background-size: 200% 100%;
+        background-position: 0% center;
+      }
+      50% {
+        background-position: 100% center;
+      }
+    }
+
+    .animate-gradient-x {
+      animation: gradient-x 3s linear infinite;
+      background-size: 200% auto;
+    }
+
+    .glow {
+      filter: drop-shadow(0 0 12px rgba(168, 85, 247, 0.7));
+    }
+  </style>
+
+  <style>
+    .click-me-animation {
+      animation: pulse-glow 2s infinite;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .click-me-animation::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+      transform: rotate(45deg);
+      animation: shine 3s infinite;
+    }
+
+    @keyframes pulse-glow {
+      0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
+      }
+      70% {
+        transform: scale(1.02);
+        box-shadow: 0 0 0 15px rgba(59, 130, 246, 0);
+      }
+      100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+      }
+    }
+
+    @keyframes shine {
+      0% {
+        left: -50%;
+      }
+      100% {
+        left: 150%;
+      }
+    }
+  </style>
+
+  <style>
+    @keyframes gradient-move {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    .animate-gradient-move {
+      animation: gradient-move 15s ease infinite;
+    }
+  </style>
+
+</MainLayout>

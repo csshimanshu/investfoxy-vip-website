@@ -1,0 +1,184 @@
+---
+import { readFileSync } from 'fs';
+import { join } from 'path';
+import { Image } from 'astro:assets';
+
+interface Profit {
+  date: string;
+  amount: number;
+  description: string;
+  image?: string;
+}
+
+// Get content data
+const contentPath = join(process.cwd(), 'src/data/content.json');
+const content = JSON.parse(readFileSync(contentPath, 'utf-8'));
+const profits: Profit[] = (content.profits || []).slice(0, 9); // Show up to 9 profits
+
+// Sort profits by date in descending order (newest first)
+profits.sort((a: Profit, b: Profit) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+// Calculate total profit
+const totalProfit = profits.reduce((sum, profit) => sum + profit.amount, 0);
+---
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<section class="relative overflow-hidden py-16 bg-black/30 backdrop-blur-sm" aria-labelledby="profits-heading">
+  <div class="absolute inset-0 bg-gradient-radial from-accent/5 via-transparent to-transparent opacity-60"></div>
+  
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+    <div class="text-center mb-12">
+      <h2 id="profits-heading" class="text-3xl sm:text-4xl font-bold mb-6 flex flex-col items-center justify-center">
+        <span class="text-white/80">Recent Trading Profits</span>
+        <span class="bg-gradient-to-r from-accent via-purple-400 to-accent bg-clip-text text-transparent text-5xl sm:text-6xl mt-2">
+          +{totalProfit.toFixed(1)}%
+        </span>
+      </h2>
+      <p class="text-white/60 max-w-2xl mx-auto">
+        Track record of our most recent successful trades. Join our VIP group to receive real-time signals and achieve similar results.
+      </p>
+    </div>
+
+    <!-- Swiper Container -->
+    <div class="swiper profitSlider">
+      <div class="swiper-wrapper">
+        {profits.map((profit) => (
+          <div class="swiper-slide">
+            <div class="bg-gradient-to-br from-black/80 via-black/70 to-black/80 backdrop-blur-lg rounded-2xl overflow-hidden border border-white/10 hover:border-accent/50 transition-all duration-500 h-full shadow-xl hover:shadow-accent/20 group">
+              {profit.image && (
+                <div class="relative w-full h-[300px] overflow-hidden">
+                  <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/70 z-10"></div>
+                  <Image 
+                    src={profit.image} 
+                    alt={profit.description}
+                    width={800}
+                    height={600}
+                    class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700"
+                  />
+                </div>
+              )}
+              <div class="p-6 relative">
+                <div class="flex justify-between items-start mb-4">
+                  <div>
+                    <p class="text-sm text-gray-400 font-medium">
+                      {new Date(profit.date).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                      })}
+                    </p>
+                    <h3 class="text-2xl font-bold mt-1 bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
+                      +{profit.amount}%
+                    </h3>
+                  </div>
+                  <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-500/10 text-green-400 border border-green-500/20">
+                    Profit
+                  </span>
+                </div>
+                <p class="text-gray-300 text-sm leading-relaxed">
+                  {profit.description}
+                </p>
+                <div class="mt-4 pt-4 border-t border-white/5">
+                  <div class="flex items-center justify-between text-sm">
+                    <span class="text-white/60">Signal Type</span>
+                    <span class="text-white font-medium">Spot Trading</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      
+      <!-- Navigation Buttons -->
+      <div class="swiper-button-prev !text-white after:!text-2xl"></div>
+      <div class="swiper-button-next !text-white after:!text-2xl"></div>
+      
+      <!-- Pagination -->
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+</section>
+
+<script>
+  declare const Swiper: any;
+  
+  document.addEventListener('astro:page-load', () => {
+    new Swiper('.profitSlider', {
+      slidesPerView: 1,
+      spaceBetween: 20,
+      loop: true,
+      autoplay: {
+        delay: 5000,
+        disableOnInteraction: false,
+      },
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      breakpoints: {
+        640: {
+          slidesPerView: 2,
+        },
+        1024: {
+          slidesPerView: 3,
+        },
+      },
+    });
+  });
+</script>
+
+<style>
+  .swiper {
+    width: 100%;
+    padding-top: 50px;
+    padding-bottom: 50px;
+  }
+
+  .swiper-slide {
+    background-position: center;
+    background-size: cover;
+    width: 300px;
+    height: 600px;
+  }
+
+  .swiper-slide img {
+    display: block;
+    width: 100%;
+  }
+
+  :root {
+    --swiper-theme-color: rgb(var(--accent));
+    --swiper-navigation-size: 44px;
+  }
+
+  .swiper-button-prev,
+  .swiper-button-next {
+    background-color: rgba(0, 0, 0, 0.7);
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 50%;
+    backdrop-filter: blur(8px);
+    transition: all 0.3s;
+  }
+
+  .swiper-button-prev:hover,
+  .swiper-button-next:hover {
+    background-color: rgba(var(--accent), 0.8);
+    transform: scale(1.1);
+  }
+
+  .swiper-pagination-bullet {
+    background: rgba(255, 255, 255, 0.6) !important;
+  }
+
+  .swiper-pagination-bullet-active {
+    background: rgb(var(--accent)) !important;
+  }
+</style>

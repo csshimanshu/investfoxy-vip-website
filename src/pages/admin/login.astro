@@ -1,0 +1,168 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+
+// Redirect if already logged in
+const token = Astro.cookies.get('admin_token')?.value;
+if (token) {
+  return Astro.redirect('/admin');
+}
+---
+
+<MainLayout title="Admin Login">
+  <div class="min-h-screen flex items-center justify-center bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8">
+      <div>
+        <h2 class="mt-6 text-center text-3xl font-extrabold text-white">
+          Admin Login
+        </h2>
+      </div>
+      <form id="login-form" class="mt-8 space-y-6">
+        <div class="rounded-md shadow-sm -space-y-px">
+          <div>
+            <label for="username" class="sr-only">Username</label>
+            <input
+              id="username"
+              name="username"
+              type="text"
+              required
+              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
+              placeholder="Username"
+              value="Himanshu811"
+            />
+          </div>
+          <div>
+            <label for="password" class="sr-only">Password</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              required
+              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
+              placeholder="Password"
+              value="Xxxtentacion1@"
+            />
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <div class="flex items-center">
+            <input
+              id="remember-me"
+              name="remember-me"
+              type="checkbox"
+              class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
+            />
+            <label for="remember-me" class="ml-2 block text-sm text-gray-300">
+              Remember me
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <button
+            type="submit"
+            class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+          >
+            Sign in
+          </button>
+        </div>
+        <div id="error-message" class="text-red-500 text-center hidden"></div>
+        <div id="reset-rate-limit" class="text-center hidden">
+          <button
+            type="button"
+            class="text-sm text-gray-300 hover:text-white underline"
+            onclick="resetRateLimit()"
+          >
+            Reset rate limit
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    let isSubmitting = false;
+    
+    async function resetRateLimit() {
+      try {
+        const response = await fetch('/api/auth/reset-limit', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (response.ok) {
+          const errorDiv = document.getElementById('error-message');
+          const resetDiv = document.getElementById('reset-rate-limit');
+          errorDiv.classList.add('hidden');
+          resetDiv.classList.add('hidden');
+          
+          // Re-enable the form
+          const form = document.getElementById('login-form');
+          const submitButton = form.querySelector('button[type="submit"]');
+          submitButton.disabled = false;
+        }
+      } catch (error) {
+        console.error('Failed to reset rate limit:', error);
+      }
+    }
+    
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      if (isSubmitting) return;
+      isSubmitting = true;
+      
+      const errorDiv = document.getElementById('error-message');
+      const resetDiv = document.getElementById('reset-rate-limit');
+      errorDiv.classList.add('hidden');
+      resetDiv.classList.add('hidden');
+
+      const formData = new FormData(e.target);
+      const credentials = {
+        username: formData.get('username'),
+        password: formData.get('password'),
+        remember: formData.get('remember-me') === 'on'
+      };
+
+      // Debug logging
+      console.log('Sending credentials:', {
+        username: credentials.username,
+        passwordLength: credentials.password.length,
+        remember: credentials.remember
+      });
+
+      try {
+        const response = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(credentials)
+        });
+
+        const data = await response.json();
+        console.log('Login response:', data); // Debug logging
+
+        if (response.ok) {
+          window.location.href = '/admin';
+        } else {
+          errorDiv.textContent = data.error || 'Invalid credentials';
+          errorDiv.classList.remove('hidden');
+          
+          // If rate limited, show reset button
+          if (response.status === 429) {
+            resetDiv.classList.remove('hidden');
+          }
+        }
+      } catch (error) {
+        console.error('Login error:', error);
+        errorDiv.textContent = 'An error occurred. Please try again.';
+        errorDiv.classList.remove('hidden');
+      } finally {
+        isSubmitting = false;
+      }
+    });
+  </script>
+</MainLayout>

@@ -1,0 +1,130 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import content from '../../data/content.json';
+---
+
+<AdminLayout title="Branding">
+  <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+    <div class="px-4 py-5 sm:p-6">
+      <form id="branding-form" class="space-y-6">
+        <!-- Status Messages -->
+        <div id="status-message" class="hidden rounded-md p-4 mb-4">
+          <p class="text-sm"></p>
+        </div>
+
+        <!-- Logo -->
+        <div class="mb-6">
+          <label for="logo" class="block text-sm font-medium text-gray-700">Logo</label>
+          <div class="mt-1 flex items-center space-x-4">
+            <img src={content.branding.logo} alt="Current logo" class="h-12 w-auto" />
+            <div class="flex-1">
+              <input
+                type="file"
+                id="logo"
+                name="logo"
+                accept="image/*"
+                class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-primary-dark"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Favicon -->
+        <div class="mb-6">
+          <label for="favicon" class="block text-sm font-medium text-gray-700">Favicon</label>
+          <div class="mt-1 flex items-center space-x-4">
+            <img src={content.branding.favicon} alt="Current favicon" class="h-8 w-8" />
+            <div class="flex-1">
+              <input
+                type="file"
+                id="favicon"
+                name="favicon"
+                accept="image/x-icon,image/png"
+                class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-primary-dark"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Website Title -->
+        <div class="mb-6">
+          <label for="title" class="block text-sm font-medium text-gray-700">Website Title</label>
+          <div class="mt-1">
+            <input
+              type="text"
+              name="title"
+              id="title"
+              value={content.branding.title}
+              class="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md"
+            />
+          </div>
+        </div>
+
+        <!-- Save Button -->
+        <div class="pt-5">
+          <div class="flex justify-end">
+            <button
+              type="submit"
+              id="submit-button"
+              class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+            >
+              Save Changes
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function showMessage(message: string, isError = false) {
+      const statusDiv = document.getElementById('status-message');
+      const messageP = statusDiv.querySelector('p');
+      
+      statusDiv.classList.remove('hidden', 'bg-green-50', 'text-green-800', 'bg-red-50', 'text-red-800');
+      if (isError) {
+        statusDiv.classList.add('bg-red-50', 'text-red-800');
+      } else {
+        statusDiv.classList.add('bg-green-50', 'text-green-800');
+      }
+      
+      messageP.textContent = message;
+      statusDiv.classList.remove('hidden');
+      
+      // Scroll to message
+      statusDiv.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Handle form submission
+    document.getElementById('branding-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const submitButton = document.getElementById('submit-button');
+      submitButton.disabled = true;
+      submitButton.textContent = 'Saving...';
+      
+      try {
+        const formData = new FormData(e.target as HTMLFormElement);
+        
+        const response = await fetch('/api/update-branding', {
+          method: 'POST',
+          body: formData
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+          showMessage('Branding updated successfully!');
+          // Reload after a short delay to show the success message
+          setTimeout(() => window.location.reload(), 1500);
+        } else {
+          throw new Error(data.details || data.error || 'Failed to update branding');
+        }
+      } catch (error) {
+        showMessage(error.message, true);
+        submitButton.disabled = false;
+        submitButton.textContent = 'Save Changes';
+      }
+    });
+  </script>
+</AdminLayout>

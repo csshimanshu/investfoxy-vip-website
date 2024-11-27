@@ -1,0 +1,10 @@
+{
+  "template": "astro",
+  "container": {
+    "node": "18"
+  },
+  "hardReloadOnChange": true,
+  "infiniteLoopProtection": true,
+  "view": "browser",
+  "port": 3000
+}

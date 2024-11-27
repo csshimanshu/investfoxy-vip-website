@@ -1,0 +1,66 @@
+{
+  "branding": {
+    "logo": "/images/INVESTFOXY_LOGO-100x100x rounded.png",
+    "favicon": "/INVESTFOXY_LOGO-100x100x rounded.png",
+    "title": "Investfoxy Trading - Private Trading Discord Membership Group"
+  },
+  "profits": [
+    {
+      "id": "54811fe7-3d01-44a2-bb99-5ed5ebf25682",
+      "date": "2024-06-12",
+      "amount": 125,
+      "description": "$SEI Long with 20X",
+      "image": "/uploads/profit-54811fe7-3d01-44a2-bb99-5ed5ebf25682-1732736511223.png"
+    },
+    {
+      "id": "28a06e7e-910a-462d-8047-76560d453a4d",
+      "date": "2024-05-25",
+      "amount": 329,
+      "description": "$KAVA Long with 20X",
+      "image": "/images/profits/3a929a6c-bc3b-498a-8c93-08b0a3457e9e-Fw0a4boaYAAb9qG.jpg"
+    },
+    {
+      "id": "4f0422c4-cd71-43d2-afba-e2582545cdf4",
+      "date": "2024-11-21",
+      "amount": 300,
+      "description": "$ETH Long with 300X Leverage",
+      "image": "/images/profits/61ba5d23-0618-47b5-b1a1-8ed91906c8b7-1732191876188.jpg"
+    },
+    {
+      "id": "b347e813-0340-4355-8054-ab0e9f06bc8f",
+      "date": "2024-11-15",
+      "amount": 103,
+      "description": "$ATOM Futures Trade with 19X Leverage",
+      "image": "/images/profits/32c9d570-fff7-4b2e-a6ce-968c3e28d341-jje3lK8ApFIAAAAASUVORK5CYII.png"
+    }
+  ],
+  "testimonials": [
+    {
+      "id": "3fd190ae-777d-4fa6-9b69-a539d0eed2ef",
+      "name": "Sonni87",
+      "initials": "S",
+      "joinDate": "2023",
+      "roi": 235,
+      "quote": "Totally amazing community! Signals are profitable and these guys have so much knowledge on crypto and developments on a larger economic scale and give feedback on all questions that come up on you journey in crypto land! Wouldn’t miss out during bullrun season 🥳🥳🤟🤟",
+      "profilePhoto": "/images/testimonials/1732471130383-8569adcbd36c70a7578c017bf5604ea5.png"
+    },
+    {
+      "id": "a2031cea-c787-4a6d-9ba0-c1facb96321b",
+      "name": "Franchez",
+      "initials": "F",
+      "joinDate": "2023",
+      "roi": 178,
+      "quote": "I had never joined a group like this before, so I didn’t know what to expect. Now I see this is the right place. Both the VIP and general community have amazing people and traders to learn from, led by Baki, Sunny, and Foxy. This is more than just signals (which are great); it’s about growing together, achieving big goals, and being supported by those who guide us along the way. It’s a great opportunity if we take advantage of it!",
+      "profilePhoto": "/images/testimonials/1732470698549-6d0c611c29a496f80d56d333c2534c6b.png"
+    },
+    {
+      "id": "20fef05b-d18c-4b06-9bfc-e7775310b406",
+      "name": "Crypto Monk",
+      "initials": "C",
+      "joinDate": "2024",
+      "roi": 246,
+      "quote": "I was skeptical since I didn’t understand crypto or trading, but the VIP community’s patience and knowledge won me over. Plus, I’m happy with my PnL in the first month—now to the moon! Hahaha 😂 LOL.",
+      "profilePhoto": "/images/testimonials/1732469364249-599a9cb2cd0823492e47683273f457c2.png"
+    }
+  ]
+}

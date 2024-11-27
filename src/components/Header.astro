@@ -1,0 +1,171 @@
+---
+import { readFileSync } from 'fs';
+import { join } from 'path';
+
+// Get branding data
+let logo = '/images/logo.png'; // default logo
+
+try {
+  const contentPath = join(process.cwd(), 'src/data/content.json');
+  const content = JSON.parse(readFileSync(contentPath, 'utf-8'));
+  logo = content.branding?.logo || logo;
+} catch (error) {
+  console.error('Error loading branding:', error);
+}
+
+const navLinks = [
+  { href: '/', text: 'Home', id: 'nav-home' },
+  { href: '#performance', text: 'Performance', id: 'nav-performance' },
+  { href: '#testimonials', text: 'Reviews', id: 'nav-reviews' },
+  { href: '#pricing', text: 'Pricing', id: 'nav-pricing' },
+  { href: '#contact', text: 'Contact', id: 'nav-contact' },
+];
+
+---
+
+<header class="fixed top-0 left-0 right-0 z-50 bg-black/40 backdrop-blur-xl border-b border-purple-500/20">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between h-20">
+      <!-- Logo and Brand -->
+      <div class="flex-shrink-0 flex items-center">
+        <a href="/" id="logo" name="logo" class="group flex items-center space-x-3 relative">
+          <div class="absolute inset-0 bg-purple-500/20 blur-xl rounded-full transition-all duration-500 group-hover:bg-purple-500/30"></div>
+          {logo && <img 
+            class="h-10 w-auto relative" 
+            src={logo} 
+            alt="Investfoxy Capital"
+            fetchpriority="high"
+            width="40"
+            height="40"
+          />}
+          <span class="text-2xl font-bold font-orbitron relative text-gray-300 group-hover:text-white transition-colors duration-300">
+            Investfoxy Capital
+          </span>
+        </a>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden sm:ml-6 sm:flex sm:items-center sm:space-x-8">
+        {navLinks.map(link => (
+          <a
+            href={link.href}
+            id={link.id}
+            name={link.id}
+            class="relative group inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-300 hover:text-white"
+          >
+            <span class="relative z-10">{link.text}</span>
+            <div class="absolute bottom-0 left-0 h-0.5 w-0 bg-gradient-to-r from-purple-500 to-accent group-hover:w-full transition-all duration-300"></div>
+          </a>
+        ))}
+        
+        <!-- Join Now Button -->
+        <button
+          onclick="window.showInterestModal()"
+          class="relative inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-accent shadow-[0_0_15px_rgba(168,85,247,0.5)] hover:shadow-[0_0_25px_rgba(168,85,247,0.65)] transition-all duration-300 hover:bg-accent/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent focus:ring-offset-black"
+        >
+          <span class="relative z-10">Join Now</span>
+          <div class="absolute inset-0 bg-gradient-to-r from-purple-600 to-accent rounded-md opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-300"></div>
+        </button>
+      </nav>
+
+      <!-- Mobile menu button -->
+      <div class="flex items-center sm:hidden">
+        <button
+          type="button"
+          id="mobile-menu-button"
+          name="mobile-menu-button"
+          class="mobile-menu-button inline-flex items-center justify-center p-2 rounded-lg text-gray-300 hover:text-white hover:bg-purple-500/10 transition-all duration-300"
+          aria-expanded="false"
+        >
+          <span class="sr-only">Open main menu</span>
+          <svg
+            class="block h-6 w-6"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  <div class="hidden sm:hidden bg-black/95 backdrop-blur-xl border-b border-purple-500/20" id="mobile-menu">
+    <div class="px-2 pt-2 pb-3 space-y-1">
+      {navLinks.map(link => (
+        <a
+          href={link.href}
+          id={`mobile-${link.id}`}
+          name={`mobile-${link.id}`}
+          class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-purple-500/10 transition-all duration-300"
+        >
+          {link.text}
+        </a>
+      ))}
+      
+      <!-- Mobile Join Now Button -->
+      <button
+        onclick="window.showInterestModal()"
+        class="w-full mt-2 flex justify-center items-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-white bg-accent shadow-[0_0_15px_rgba(168,85,247,0.5)] hover:shadow-[0_0_25px_rgba(168,85,247,0.65)] transition-all duration-300 hover:bg-accent/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent focus:ring-offset-black"
+      >
+        <span class="relative z-10">Join Now</span>
+        <div class="absolute inset-0 bg-gradient-to-r from-purple-600 to-accent rounded-md opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-300"></div>
+      </button>
+    </div>
+  </div>
+</header>
+
+<style>
+  .font-orbitron {
+    font-family: 'Orbitron', sans-serif;
+  }
+
+  .bg-300\% {
+    background-size: 300% 100%;
+  }
+
+  @keyframes gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  .animate-gradient {
+    animation: gradient 8s ease infinite;
+  }
+
+  /* Mobile menu button focus styles */
+  .mobile-menu-button:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+</style>
+
+<script>
+  // Mobile menu toggle
+  const mobileMenuButton = document.querySelector('.mobile-menu-button');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  if (mobileMenuButton && mobileMenu) {
+    mobileMenuButton.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+      mobileMenuButton.setAttribute('aria-expanded', (!isExpanded).toString());
+    });
+  }
+</script>

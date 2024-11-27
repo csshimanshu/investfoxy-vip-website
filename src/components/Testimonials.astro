@@ -1,0 +1,287 @@
+---
+import content from '../data/content.json';
+---
+
+<!-- Testimonials Section -->
+<section id="testimonials" class="relative py-12 bg-black/50 backdrop-blur-sm overflow-hidden" aria-labelledby="testimonials-title">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <h2 id="testimonials-title" class="relative inline-block">
+        <span class="text-2xl sm:text-3xl lg:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white via-accent to-white animate-gradient">
+          What Our <span class="text-accent">Members</span> Say
+        </span>
+        <div class="absolute -bottom-4 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-accent to-transparent"></div>
+      </h2>
+    </div>
+
+    <div class="relative">
+      <!-- Slider Container -->
+      <div class="slider-container overflow-hidden relative">
+        <div class="slider-track flex transition-transform duration-500">
+          {content.testimonials.map((testimonial) => (
+            <div class="slide w-full flex-shrink-0">
+              <div class="max-w-lg mx-auto">
+                <div class="relative mb-6">
+                  <div class="w-20 h-20 mx-auto rounded-full overflow-hidden border-2 border-accent">
+                    {testimonial.profilePhoto ? (
+                      <img 
+                        src={testimonial.profilePhoto} 
+                        alt={`${testimonial.name}'s profile`}
+                        class="w-full h-full object-cover"
+                        loading="lazy"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                          target.nextElementSibling?.classList.remove('hidden');
+                        }}
+                      />
+                      <div class="hidden w-full h-full bg-primary flex items-center justify-center">
+                        <span class="text-xl font-semibold text-accent">{testimonial.initials}</span>
+                      </div>
+                    ) : (
+                      <div class="w-full h-full bg-primary flex items-center justify-center">
+                        <span class="text-xl font-semibold text-accent">{testimonial.initials}</span>
+                      </div>
+                    )}
+                  </div>
+                  <div class="absolute -bottom-3 left-1/2 transform -translate-x-1/2">
+                    <div class="bg-accent text-black text-xs px-3 py-1 rounded-full font-medium">
+                      +{testimonial.roi}% ROI
+                    </div>
+                  </div>
+                </div>
+
+                <div class="text-center mb-4">
+                  <p class="text-sm font-medium text-white mb-1">{testimonial.name}</p>
+                  <p class="text-xs text-gray-400">Member since {testimonial.joinDate}</p>
+                </div>
+
+                <div class="flex items-center justify-center mb-4 gap-1">
+                  {Array(5).fill('').map(() => (
+                    <svg class="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                    </svg>
+                  ))}
+                </div>
+
+                <blockquote class="text-sm leading-relaxed text-gray-300 text-center mb-4 max-w-2xl mx-auto">
+                  "{testimonial.quote}"
+                </blockquote>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <!-- Navigation Dots -->
+        <div class="flex justify-center gap-2 mt-6">
+          {content.testimonials.map((_, index) => (
+            <button
+              class="w-2 h-2 rounded-full bg-gray-600 hover:bg-accent transition-colors duration-200 slider-dot"
+              data-index={index}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
+        </div>
+
+        <!-- Navigation Arrows -->
+        <button 
+          class="absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-white hover:text-accent transition-colors"
+          id="prevSlide"
+          aria-label="Previous slide"
+        >
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+          </svg>
+        </button>
+        <button 
+          class="absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-white hover:text-accent transition-colors"
+          id="nextSlide"
+          aria-label="Next slide"
+        >
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .slider-container {
+      width: 100%;
+      position: relative;
+    }
+
+    .slider-track {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+    }
+
+    .slide {
+      width: 100%;
+      flex-shrink: 0;
+      padding: 0 1rem;
+    }
+
+    .slider-dot.active {
+      background-color: var(--accent-color, #f59e0b);
+    }
+
+    @supports (backdrop-filter: blur(12px)) {
+      .backdrop-blur-sm {
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+      }
+    }
+
+    @keyframes gradientFlow {
+      0% {
+        background-position: 200% center;
+      }
+      100% {
+        background-position: -200% center;
+      }
+    }
+
+    .animate-gradient {
+      animation: gradientFlow 8s linear infinite;
+      background-size: 200% auto;
+    }
+
+    h2#testimonials-title::before,
+    h2#testimonials-title::after {
+      content: '';
+      position: absolute;
+      width: 40px;
+      height: 2px;
+      background: var(--accent-color);
+      top: 50%;
+      transform: translateY(-50%);
+      opacity: 0.6;
+    }
+
+    h2#testimonials-title::before {
+      left: -60px;
+    }
+
+    h2#testimonials-title::after {
+      right: -60px;
+    }
+
+    @media (max-width: 640px) {
+      h2#testimonials-title::before,
+      h2#testimonials-title::after {
+        width: 20px;
+        left: -30px;
+      }
+
+      h2#testimonials-title::after {
+        right: -30px;
+        left: auto;
+      }
+    }
+  </style>
+
+  <script>
+    let currentSlide = 0;
+    const slider = document.querySelector('.slider-track');
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.slider-dot');
+    const prevButton = document.getElementById('prevSlide');
+    const nextButton = document.getElementById('nextSlide');
+    const slideCount = slides.length;
+    let autoplayInterval;
+
+    function updateSlider() {
+      if (!slider) return;
+      slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+      
+      // Update dots
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentSlide);
+      });
+    }
+
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % slideCount;
+      updateSlider();
+    }
+
+    function prevSlide() {
+      currentSlide = (currentSlide - 1 + slideCount) % slideCount;
+      updateSlider();
+    }
+
+    function goToSlide(index) {
+      currentSlide = index;
+      updateSlider();
+      resetAutoplay();
+    }
+
+    function resetAutoplay() {
+      clearInterval(autoplayInterval);
+      autoplayInterval = setInterval(nextSlide, 5000); // Change slide every 5 seconds
+    }
+
+    // Event Listeners
+    prevButton?.addEventListener('click', () => {
+      prevSlide();
+      resetAutoplay();
+    });
+
+    nextButton?.addEventListener('click', () => {
+      nextSlide();
+      resetAutoplay();
+    });
+
+    dots.forEach((dot, index) => {
+      dot.addEventListener('click', () => goToSlide(index));
+    });
+
+    // Initialize slider
+    updateSlider();
+    resetAutoplay();
+
+    // Pause autoplay on hover
+    slider?.addEventListener('mouseenter', () => clearInterval(autoplayInterval));
+    slider?.addEventListener('mouseleave', resetAutoplay);
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') {
+        prevSlide();
+        resetAutoplay();
+      } else if (e.key === 'ArrowRight') {
+        nextSlide();
+        resetAutoplay();
+      }
+    });
+
+    // Touch events for mobile
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    slider?.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    });
+
+    slider?.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    });
+
+    function handleSwipe() {
+      const swipeThreshold = 50;
+      const diff = touchStartX - touchEndX;
+
+      if (Math.abs(diff) > swipeThreshold) {
+        if (diff > 0) {
+          nextSlide();
+        } else {
+          prevSlide();
+        }
+        resetAutoplay();
+      }
+    }
+  </script>
+</section>

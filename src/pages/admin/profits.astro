@@ -1,0 +1,372 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import content from '../../data/content.json';
+---
+
+<AdminLayout title="Manage Profits">
+  <div class="space-y-6">
+    <!-- Add New Profit -->
+    <div class="bg-white shadow sm:rounded-lg">
+      <div class="px-4 py-5 sm:p-6">
+        <h3 class="text-lg leading-6 font-medium text-gray-900">Add New Profit</h3>
+        <form id="add-profit-form" class="mt-5 space-y-4">
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+              <label for="date" class="block text-sm font-medium text-gray-700">Date</label>
+              <input
+                type="date"
+                name="date"
+                id="date"
+                required
+                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary sm:text-sm"
+              />
+            </div>
+            <div>
+              <label for="amount" class="block text-sm font-medium text-gray-700">Profit Amount (%)</label>
+              <input
+                type="number"
+                name="amount"
+                id="amount"
+                required
+                min="0"
+                step="0.1"
+                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary sm:text-sm"
+              />
+            </div>
+          </div>
+          <div>
+            <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+            <input
+              type="text"
+              name="description"
+              id="description"
+              required
+              class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary sm:text-sm"
+            />
+          </div>
+          <div>
+            <label for="image" class="block text-sm font-medium text-gray-700">Screenshot</label>
+            <input
+              type="file"
+              name="image"
+              id="image"
+              accept="image/*"
+              class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-primary-dark"
+            />
+          </div>
+          <div class="flex justify-end">
+            <button
+              type="submit"
+              class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+            >
+              Add Profit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Existing Profits -->
+    <div class="bg-white shadow sm:rounded-lg">
+      <div class="px-4 py-5 sm:p-6">
+        <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Existing Profits</h3>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Screenshot</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              {content.profits.map((profit) => (
+                <tr data-profit-id={profit.id}>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{profit.date}</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm profit-amount">+{profit.amount}%</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{profit.description}</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {profit.image && (
+                      <img 
+                        src={profit.image} 
+                        alt="Profit screenshot" 
+                        width="40"
+                        height="40"
+                        loading="lazy"
+                        decoding="async"
+                        class="h-10 w-auto object-contain rounded-sm"
+                      />
+                    )}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <button
+                      class="text-primary hover:text-primary-dark mr-2 edit-profit-btn"
+                      data-profit={JSON.stringify(profit)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      class="text-red-600 hover:text-red-800 delete-profit-btn"
+                      data-profit-id={profit.id}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Profit Modal -->
+  <div id="edit-modal" class="fixed inset-0 bg-gray-500 bg-opacity-75 hidden flex items-center justify-center">
+    <div class="bg-white rounded-lg p-6 max-w-lg w-full">
+      <h3 class="text-lg font-medium text-gray-900 mb-4">Edit Profit</h3>
+      <form id="edit-profit-form" class="space-y-4">
+        <input type="hidden" id="edit-id" name="id" />
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div>
+            <label for="edit-date" class="block text-sm font-medium text-gray-700">Date</label>
+            <input
+              type="date"
+              name="date"
+              id="edit-date"
+              required
+              class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary sm:text-sm"
+            />
+          </div>
+          <div>
+            <label for="edit-amount" class="block text-sm font-medium text-gray-700">Profit Amount (%)</label>
+            <input
+              type="number"
+              name="amount"
+              id="edit-amount"
+              required
+              min="0"
+              step="0.1"
+              class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary sm:text-sm"
+            />
+          </div>
+        </div>
+        <div>
+          <label for="edit-description" class="block text-sm font-medium text-gray-700">Description</label>
+          <input
+            type="text"
+            name="description"
+            id="edit-description"
+            required
+            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary sm:text-sm"
+          />
+        </div>
+        <div>
+          <label for="edit-image" class="block text-sm font-medium text-gray-700">New Screenshot (optional)</label>
+          <input
+            type="file"
+            name="image"
+            id="edit-image"
+            accept="image/*"
+            class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-primary-dark"
+          />
+        </div>
+        <div class="flex justify-end space-x-3">
+          <button
+            type="button"
+            onclick="closeEditModal()"
+            class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+          >
+            Save Changes
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Add profit form handler
+    const addForm = document.getElementById('add-profit-form');
+    if (addForm) {
+      addForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const form = e.target as HTMLFormElement;
+        const formData = new FormData(form);
+        
+        try {
+          const response = await fetch('/api/profits/add', {
+            method: 'POST',
+            body: formData
+          });
+
+          const data = await response.json();
+          
+          if (!response.ok) {
+            throw new Error(data.error || 'Failed to add profit');
+          }
+
+          window.location.reload();
+        } catch (error) {
+          console.error('Error adding profit:', error);
+          alert(error instanceof Error ? error.message : 'Failed to add profit. Please try again.');
+        }
+      });
+    }
+
+    // Initialize edit buttons
+    document.querySelectorAll<HTMLButtonElement>('.edit-profit-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        const profitData = button.dataset.profit;
+        if (!profitData) return;
+        
+        const profit = JSON.parse(profitData);
+        const modal = document.getElementById('edit-modal');
+        if (!modal) return;
+        
+        // Show modal
+        modal.classList.remove('hidden');
+        
+        // Fill form with profit data
+        const editId = document.getElementById('edit-id') as HTMLInputElement;
+        const editDate = document.getElementById('edit-date') as HTMLInputElement;
+        const editAmount = document.getElementById('edit-amount') as HTMLInputElement;
+        const editDescription = document.getElementById('edit-description') as HTMLInputElement;
+
+        if (editId) editId.value = profit.id;
+        if (editDate) editDate.value = profit.date;
+        if (editAmount) editAmount.value = profit.amount;
+        if (editDescription) editDescription.value = profit.description;
+      });
+    });
+
+    // Initialize delete buttons
+    document.querySelectorAll<HTMLButtonElement>('.delete-profit-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        const profitId = button.dataset.profitId;
+        if (!profitId) return;
+        
+        if (confirm('Are you sure you want to delete this profit entry?')) {
+          deleteProfit(profitId);
+        }
+      });
+    });
+
+    function closeEditModal() {
+      const modal = document.getElementById('edit-modal');
+      const form = document.getElementById('edit-profit-form') as HTMLFormElement;
+      
+      if (modal) modal.classList.add('hidden');
+      if (form) form.reset();
+    }
+
+    // Handle edit form submission
+    const editForm = document.getElementById('edit-profit-form');
+    if (editForm) {
+      editForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const form = e.target as HTMLFormElement;
+        const submitButton = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+        if (!submitButton) return;
+
+        const originalButtonText = submitButton.textContent || 'Submit';
+        submitButton.disabled = true;
+        submitButton.textContent = 'Updating...';
+        
+        try {
+          const formData = new FormData(form);
+          const profitId = formData.get('id');
+          
+          if (!profitId) {
+            throw new Error('No profit ID provided');
+          }
+
+          const response = await fetch(`/api/profits/${profitId}`, {
+            method: 'PUT',
+            body: formData
+          });
+
+          let data;
+          try {
+            data = await response.json();
+          } catch (error) {
+            console.error('Error parsing response:', error);
+            throw new Error('Failed to parse server response');
+          }
+
+          if (!response.ok) {
+            throw new Error(data.error || 'Failed to update profit');
+          }
+
+          // Success
+          window.location.reload();
+        } catch (error) {
+          console.error('Error updating profit:', error);
+          alert(error instanceof Error ? error.message : 'Failed to update profit. Please try again.');
+        } finally {
+          submitButton.disabled = false;
+          submitButton.textContent = originalButtonText;
+        }
+      });
+    }
+
+    // Close modal when clicking outside
+    const modal = document.getElementById('edit-modal');
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          closeEditModal();
+        }
+      });
+    }
+
+    async function deleteProfit(id: string) {
+      try {
+        const response = await fetch(`/api/profits/${id}`, {
+          method: 'DELETE'
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to delete profit');
+        }
+
+        window.location.reload();
+      } catch (error) {
+        console.error('Error deleting profit:', error);
+        alert(error instanceof Error ? error.message : 'Failed to delete profit. Please try again.');
+      }
+    }
+  </script>
+
+  <style>
+    .profit-amount {
+      color: #22c55e; /* text-green-500 */
+      text-shadow: 0 0 10px rgba(34, 197, 94, 0.5),
+                  0 0 20px rgba(34, 197, 94, 0.3),
+                  0 0 30px rgba(34, 197, 94, 0.2);
+      animation: glow 1.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      from {
+        text-shadow: 0 0 10px rgba(34, 197, 94, 0.5),
+                     0 0 20px rgba(34, 197, 94, 0.3),
+                     0 0 30px rgba(34, 197, 94, 0.2);
+      }
+      to {
+        text-shadow: 0 0 20px rgba(34, 197, 94, 0.6),
+                     0 0 30px rgba(34, 197, 94, 0.4),
+                     0 0 40px rgba(34, 197, 94, 0.3);
+      }
+    }
+  </style>
+</AdminLayout>
